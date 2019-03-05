@@ -2,7 +2,7 @@
 
 ## TAMUCTF 2019
 * [(PWN) pwn6 - exploit client/server app](tamuctf/pwn6/solve.py)
-* [(NETWORK) alt-f4](tamuctf/altf4/solution.md)
+* [(NETWORK) alt-f4](tamuctf/altf4/solution.md) (in polish, not a production-grade writeup)
 
 ### ISITDTU CTF quals 2018
 * [(PWN) babyformat - just a solving script *for a local libc*](isitdtu_ctf_quals_2018/babyformat/solve.py)
