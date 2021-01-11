@@ -1,9 +1,16 @@
-Run `./solve.sh` to solve. When running for first time, you need to:
-* update the (referenced) docker image name in `build.sh` and the `<<YOURIP>>` part
-* login to gitlab docker registry (`docker login`) and share your project with `dragonsectorclient`
+In this CTF challenge, there was a custom AppArmor policy applied to the run containers, such that it disallowed reads/writes to `/flag-*` paths.
 
-TL;DR: The apparmor denies read/write/etc to `/flag-*` but this is enforced during container run time.
-It turns out that when the `docker run -v something:somepath ...` is invoked, the `somepath` follows links and we can make a link from `/flag-XXYY` to `/D` in our image. In the end, the `docker run -v /flag.txt:/flag-XXYY ...` will mount `flag.txt` into `/D` which we can read.
+We, as a user, could only provide a docker image that was built and run later on, and the flag (which we wanted to steal) was mounted as a volume into the run container with a `docker run -v /flag.txt:/flag-XXYY ...` invocation. The `XXYY` part was random.
+
+### Solution
+
+The solver is in `./solve.sh`. When running for first time, you need to:
+* update the (referenced) docker image name in `build.sh` and the `<<YOURIP>>` part
+* login to gitlab docker registry (`docker login`) and share your project with `dragonsectorclient` (that's how you shared the docker image with the challenge, and the challenge pulled and run it later on)
+
+The *bug* here is that AppArmor denies read/write/etc to `/flag-*` but this limitation is enforced during container run time **but not during its build time AND that Docker will follow symlinks present in the image when mounting files with `docker run -v /hostpath:/containerpath ...`**.
+
+So it turns out that when the `docker run -v something:somepath ...` is invoked, the `somepath` follows links and we can make a link from `/flag-XXYY` to `/D` in our image. In the end, the `docker run -v /flag.txt:/flag-XXYY ...` will mount `flag.txt` into `/D` which we can read.
 
 ```
 dc@jhtc:~/dsctf/x/task/ds-apparmor-task/solution$ ./solve.sh
