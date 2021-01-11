@@ -1,3 +1,6 @@
+### Writeup for the AppArmor2 task from Dragon Sector CTF 2020
+This is a very short writeup to the "AppArmor2" challenge from the [Dragon Sector CTF 2020](https://ctftime.org/event/1082), solved by disconnect3d from justCatTheFish ctf team.
+
 In this CTF challenge, there was a custom AppArmor policy applied to the run containers, such that it disallowed reads/writes to `/flag-*` paths.
 
 We, as a user, could only provide a docker image that was built and run later on, and the flag (which we wanted to steal) was mounted as a volume into the run container with a `docker run -v /flag.txt:/flag-XXYY ...` invocation. The `XXYY` part was random.
